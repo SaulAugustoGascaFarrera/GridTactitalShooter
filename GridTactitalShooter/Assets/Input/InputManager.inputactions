@@ -1,0 +1,34 @@
+{
+    "name": "InputManager",
+    "maps": [
+        {
+            "name": "Unit",
+            "id": "c8fa7d11-bd56-4fce-840b-7c035d5e0c48",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Button",
+                    "id": "d46dbb9b-5c3d-43db-b98b-8fbce8bd01f5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1674e4e2-e72a-4959-90e6-82c3f9e6bfcd",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
