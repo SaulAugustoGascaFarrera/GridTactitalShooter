@@ -35,4 +35,26 @@ public class LevelGrid : MonoBehaviour
 
     public int GetWidth() => gridSystem.GetWidth();
     public int GetHeight() => gridSystem.GetHeight();   
+
+
+    public void SetAddUnitAtGridPosition(Unit unit,GridPosition gridPosition)
+    {
+        GridObject gridObject = GetGridObject(gridPosition);
+        gridObject.AddUnit(unit);
+    }
+
+    public void RemoveUnitAtGridPosition(Unit unit,GridPosition gridPosition)
+    {
+        GridObject gridObject = GetGridObject(gridPosition);
+        gridObject.RemoveUnit(unit);
+    }
+
+
+    public void UnitMovedAtGridPosition(Unit unit,GridPosition fromGridPosition,GridPosition toGridPosition)
+    {
+        RemoveUnitAtGridPosition(unit, fromGridPosition);
+        SetAddUnitAtGridPosition(unit, toGridPosition);
+    }
+
+
 }

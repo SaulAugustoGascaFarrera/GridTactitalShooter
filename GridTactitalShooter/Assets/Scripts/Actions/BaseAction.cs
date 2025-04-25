@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class BaseAction : MonoBehaviour
 {
 
-    private bool isActive;
+    public bool isActive;
 
     public abstract string GetActionName();
 }

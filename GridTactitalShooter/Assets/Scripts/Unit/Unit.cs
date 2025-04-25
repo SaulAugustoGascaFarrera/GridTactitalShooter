@@ -8,6 +8,8 @@ public class Unit : MonoBehaviour
     private SpinAction spinAction;
     private BaseAction[] baseActions;
 
+    private GridPosition gridPosition;
+
     private void Awake()
     {
         moveAction = GetComponent<MoveAction>();
@@ -19,12 +21,33 @@ public class Unit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        LevelGrid.Instance.SetAddUnitAtGridPosition(this, gridPosition);
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+
+        if(newGridPosition != gridPosition)
+        {
+            LevelGrid.Instance.UnitMovedAtGridPosition(this,gridPosition,newGridPosition);
+
+            gridPosition = newGridPosition;
+        }
+
     }
+
+    public MoveAction GetMoveAction()
+    { 
+        return moveAction;
+    }
+
+    public SpinAction GetSpinAction()
+    {
+        return spinAction;
+    }
+
 }

@@ -34,12 +34,12 @@ public class GridObject : MonoBehaviour
     }
 
 
-    public void AddUnitAtGridPosition(Unit unit)
+    public void AddUnit(Unit unit)
     {
         unitList.Add(unit);
     }
 
-    public void RemoveUnitAtGridPosition(Unit unit)
+    public void RemoveUnit(Unit unit)
     {
         unitList.Remove(unit);
     }
