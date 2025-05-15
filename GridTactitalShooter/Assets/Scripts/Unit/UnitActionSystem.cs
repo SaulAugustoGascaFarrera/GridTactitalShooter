@@ -2,21 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class UnitActionSystem : MonoBehaviour
 {
-    public static UnitActionSystem Instance { get; private set; }
-
     public event EventHandler OnSelectedUnit;
 
-    [SerializeField] private Unit selectedUnit;
+    public static UnitActionSystem Instance { get; private set; }
 
+     [SerializeField] private Unit selectedUnit;
 
     private void Awake()
     {
-
-        if (Instance != null)
+        if(Instance != null)
         {
             Destroy(gameObject);
             return;
@@ -25,7 +22,7 @@ public class UnitActionSystem : MonoBehaviour
         Instance = this;
     }
 
-   
+    // Start is called before the first frame update
     void Start()
     {
         GameInput.Instance.OnMove += Instance_OnMove;
@@ -34,37 +31,34 @@ public class UnitActionSystem : MonoBehaviour
     private void Instance_OnMove(object sender, EventArgs e)
     {
 
-       
         if (TryGetSelectedUnit() || !selectedUnit) return;
 
-       
         GridPosition gridPosition = LevelGrid.Instance.GetGridPosition(MouseManager.Instance.GetMouseWorldPosition());
 
+        if (selectedUnit.GetMoveAction().IsValidActionAtGridPosition(gridPosition))
+        {
+            selectedUnit.GetMoveAction().Move(gridPosition);
+        }
+        
+        
 
-        if (!LevelGrid.Instance.IsValidGridPosition(gridPosition)) return;
+        
+        
 
-        selectedUnit.GetMoveAction().Move(gridPosition);
     }
 
-   
+    // Update is called once per frame
     void Update()
     {
         
-
-        if(Input.GetMouseButtonDown(1))
-        {
-            if (!selectedUnit) return;
-
-            selectedUnit.GetSpinAction().Spin();
-
-        }
     }
+
 
     public bool TryGetSelectedUnit()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, 1 << 7))
+        if (Physics.Raycast(ray,out RaycastHit hit,float.MaxValue,1 << 7))
         {
             if (hit.transform.gameObject.TryGetComponent(out Unit unit))
             {
@@ -72,19 +66,16 @@ public class UnitActionSystem : MonoBehaviour
 
                 return true;
             }
-           
         }
-       
+
+
         return false;
-        
-
-
     }
 
 
-    private void SetSelectedUnit(Unit newSelectedUnit)
+    public void SetSelectedUnit(Unit newSelectedUnit)
     {
-        selectedUnit = newSelectedUnit;
+        this.selectedUnit = newSelectedUnit;
 
         OnSelectedUnit?.Invoke(this, EventArgs.Empty);
     }
@@ -94,4 +85,6 @@ public class UnitActionSystem : MonoBehaviour
     {
         return selectedUnit;
     }
+
+
 }

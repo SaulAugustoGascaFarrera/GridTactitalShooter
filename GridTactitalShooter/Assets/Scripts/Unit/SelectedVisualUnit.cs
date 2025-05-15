@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectedUnitVisual : MonoBehaviour
+public class SelectedVisualUnit : MonoBehaviour
 {
     private Unit unit;
-    private MeshRenderer meshRenderer;
+    [SerializeField] private MeshRenderer meshRenderer;
 
     private void Awake()
     {
@@ -17,6 +17,7 @@ public class SelectedUnitVisual : MonoBehaviour
     void Start()
     {
         UnitActionSystem.Instance.OnSelectedUnit += Instance_OnSelectedUnit;
+
         UpdateVisual();
     }
 
@@ -27,16 +28,23 @@ public class SelectedUnitVisual : MonoBehaviour
 
     private void UpdateVisual()
     {
-        if(UnitActionSystem.Instance.GetSelectedUnit() == unit)
+        if (UnitActionSystem.Instance.GetSelectedUnit() == unit)
         {
-            meshRenderer.enabled = true;
+            Show();
         }
         else
         {
-            meshRenderer.enabled = false;
+            Hide();
         }
-        
     }
 
-   
+    private void Show()
+    {
+        meshRenderer.enabled = true;
+    }
+
+    private void Hide()
+    {
+        meshRenderer.enabled = false;
+    }
 }

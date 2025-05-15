@@ -4,44 +4,43 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+
+   
+
+    private GridPosition gridPosition;
     private MoveAction moveAction;
     private SpinAction spinAction;
     private BaseAction[] baseActions;
 
-    private GridPosition gridPosition;
-
     private void Awake()
     {
-        moveAction = GetComponent<MoveAction>();
-        spinAction = GetComponent<SpinAction>();
-        baseActions = GetComponents<BaseAction>();
-
+       moveAction = GetComponent<MoveAction>();
+       spinAction = GetComponent<SpinAction>();
+       baseActions = GetComponents<BaseAction>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
-        LevelGrid.Instance.SetAddUnitAtGridPosition(this, gridPosition);
-        
+       gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+       LevelGrid.Instance.AddUnitAtGridPosition(this, gridPosition);    
     }
 
     // Update is called once per frame
     void Update()
     {
-        GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        GridPosition updateGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
 
-        if(newGridPosition != gridPosition)
+        if(updateGridPosition != gridPosition)
         {
-            LevelGrid.Instance.UnitMovedAtGridPosition(this,gridPosition,newGridPosition);
+            LevelGrid.Instance.UpdateUnitAtGridPosition(this,gridPosition,updateGridPosition);
 
-            gridPosition = newGridPosition;
+            gridPosition = updateGridPosition;
         }
-
     }
 
     public MoveAction GetMoveAction()
-    { 
+    {
         return moveAction;
     }
 
@@ -49,5 +48,12 @@ public class Unit : MonoBehaviour
     {
         return spinAction;
     }
+
+    public GridPosition GetGridPosition()
+    {
+        return gridPosition;
+    }
+
+
 
 }

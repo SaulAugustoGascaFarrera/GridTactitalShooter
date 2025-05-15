@@ -6,10 +6,9 @@ public class LevelGrid : MonoBehaviour
 {
     public static LevelGrid Instance { get; private set; }
 
-    [SerializeField] private Transform gridDebugObject;
     private GridSystem gridSystem;
-
-    private void Awake()
+    [SerializeField] private Transform gridObjectPrefab;
+    public void Awake()
     {
         if(Instance != null)
         {
@@ -17,27 +16,27 @@ public class LevelGrid : MonoBehaviour
             return;
         }
 
-        Instance = this;
-
         gridSystem = new GridSystem(10,10,2.0f);
-        gridSystem.CreateGridDebugObject(gridDebugObject);
 
-        
+        gridSystem.CreateDebugObject(gridObjectPrefab);
+
+
+        Instance = this;
     }
 
+    public int GetWidth() => gridSystem.GetWidth();
+
+    public int GetHeight() => gridSystem.GetHeight();   
+
     public Vector3 GetWorldPosition(GridPosition gridPosition) => gridSystem.GetWorldPosition(gridPosition);
+   
+    public GridObject GetGridObject(GridPosition gridPosition) => gridSystem.GetGridObject(gridPosition);
 
     public GridPosition GetGridPosition(Vector3 worldPosition) => gridSystem.GetGridPosition(worldPosition);
 
-    public GridObject GetGridObject(GridPosition gridPosition) => gridSystem.GetGridObject(gridPosition);
-
     public bool IsValidGridPosition(GridPosition gridPosition) => gridSystem.IsValidGridPosition(gridPosition);
 
-    public int GetWidth() => gridSystem.GetWidth();
-    public int GetHeight() => gridSystem.GetHeight();   
-
-
-    public void SetAddUnitAtGridPosition(Unit unit,GridPosition gridPosition)
+    public void AddUnitAtGridPosition(Unit unit,GridPosition gridPosition)
     {
         GridObject gridObject = GetGridObject(gridPosition);
         gridObject.AddUnit(unit);
@@ -49,12 +48,17 @@ public class LevelGrid : MonoBehaviour
         gridObject.RemoveUnit(unit);
     }
 
-
-    public void UnitMovedAtGridPosition(Unit unit,GridPosition fromGridPosition,GridPosition toGridPosition)
+    public bool HasAnyUnitAtGridPosition(GridPosition gridPosition)
     {
-        RemoveUnitAtGridPosition(unit, fromGridPosition);
-        SetAddUnitAtGridPosition(unit, toGridPosition);
+        GridObject gridObject = GetGridObject(gridPosition);
+        return gridObject.HasAnyUnit();
     }
 
+    public void UpdateUnitAtGridPosition(Unit unit,GridPosition fromGridPosition,GridPosition toGridPosition)
+    {
+        RemoveUnitAtGridPosition(unit, fromGridPosition);
+        AddUnitAtGridPosition(unit, toGridPosition);
+        
+    }
 
 }

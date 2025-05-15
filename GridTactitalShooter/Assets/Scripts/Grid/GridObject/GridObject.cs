@@ -2,35 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridObject : MonoBehaviour
+public class GridObject
 {
-
     private GridSystem gridSystem;
     private GridPosition gridPosition;
     private List<Unit> unitList;
-
-    public GridObject(GridSystem gridSystem, GridPosition gridPosition)
+    public GridObject(GridSystem gridSystem,GridPosition gridPosition)
     {
-        unitList = new List<Unit>();
         this.gridSystem = gridSystem;
         this.gridPosition = gridPosition;
+        unitList = new List<Unit>();
     }
 
     public override string ToString()
     {
         string unitString = "";
 
-        if (HasAnyUnitAtGridPosition())
+        if (HasAnyUnit())
         {
-            
-            foreach(Unit unit in unitList)
+
+            foreach (Unit unit in unitList)
             {
-                unitString += unit.ToString() + "\n";  
+                unitString += unit.ToString() + "\n";
             }
 
+            return gridPosition.ToString() + "\n" + unitString;
         }
-
-        return gridPosition.ToString() + "\n" + unitString;
+        return gridPosition.ToString();
     }
 
 
@@ -44,15 +42,14 @@ public class GridObject : MonoBehaviour
         unitList.Remove(unit);
     }
 
-    public bool HasAnyUnitAtGridPosition()
-    {
-        return unitList.Count > 0;
-    }
-
     public List<Unit> GetUnitList()
     {
         return unitList;
     }
 
+    public bool HasAnyUnit()
+    {
+        return unitList.Count > 0;
+    }
 
 }
